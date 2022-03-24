@@ -1,4 +1,5 @@
 import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
 
 
 def convert_outfield(pos):
@@ -18,9 +19,12 @@ def main():
     stats.drop(columns=["h", "ab"], inplace=True)
 
     for pos, pos_players in stats.groupby("primary_position"):
-        normed_stats = (
-            pos_players.drop(columns=["name_full", "primary_position"])
-            / pos_players.drop(columns=["name_full", "primary_position"]).max()
+        normed_stats = pd.DataFrame(
+            MinMaxScaler().fit_transform(
+                pos_players.drop(columns=["name_full", "primary_position"])
+            ),
+            index=pos_players.index,
+            columns=pos_players.drop(columns=["name_full", "primary_position"]).columns,
         )
         normed_stats["score"] = normed_stats.mean(axis=1)
         final = pd.merge(
@@ -30,12 +34,15 @@ def main():
             left_index=True,
             right_index=True,
         ).sort_values("score", ascending=False)
-        final.to_csv(f"rankings/hitting-ranksings-2021-pos-{pos}.csv")
+        final.to_csv(f"rankings/hitting-rankings-2021-pos-{pos}.csv")
 
     # Do one for all players
-    normed_stats = (
-        stats.drop(columns=["name_full", "primary_position"])
-        / stats.drop(columns=["name_full", "primary_position"]).max()
+    normed_stats = pd.DataFrame(
+        MinMaxScaler().fit_transform(
+            stats.drop(columns=["name_full", "primary_position"])
+        ),
+        index=stats.index,
+        columns=stats.drop(columns=["name_full", "primary_position"]).columns,
     )
     normed_stats["score"] = normed_stats.mean(axis=1)
     final = pd.merge(
@@ -45,7 +52,7 @@ def main():
         left_index=True,
         right_index=True,
     ).sort_values("score", ascending=False)
-    final.to_csv(f"rankings/hitting-ranksings-2021.csv")
+    final.to_csv(f"rankings/hitting-rankings-2021.csv")
 
 
 if __name__ == "__main__":
