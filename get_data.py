@@ -40,7 +40,7 @@ def get_season_hitting_stats(
     season: Union[int, str],
     game_type: Optional[str] = "'R'",
     league_list_id: Optional[str] = "'mlb'",
-    **kwargs
+    **kwargs,
 ):
     full_path = urljoin(HOST, "/json/named.sport_hitting_tm.bam")
     kwargs["sport_hitting_tm.col_in"] = kwargs.pop("col_in", None)
@@ -62,7 +62,7 @@ def get_season_pitching_stats(
     season: Union[int, str],
     game_type: Optional[str] = "'R'",
     league_list_id: Optional[str] = "'mlb'",
-    **kwargs
+    **kwargs,
 ):
     full_path = urljoin(HOST, "/json/named.sport_pitching_tm.bam")
     kwargs["sport_pitching_tm.col_in"] = kwargs.pop("col_in", None)
@@ -109,7 +109,19 @@ def main():
             stats = get_season_pitching_stats(
                 player["player_id"],
                 season=SEASON,
-                col_in=["w", "sv", "hld", "so", "er", "bb", "h", "ip", "team_full"],
+                col_in=[
+                    "w",
+                    "sv",
+                    "hld",
+                    "so",
+                    "er",
+                    "bb",
+                    "h",
+                    "ip",
+                    "g",
+                    "gs",
+                    "team_full",
+                ],
             )
             if isinstance(stats, list):
                 for team_stats in stats:
@@ -132,10 +144,10 @@ def main():
                 player.update(stats)
                 hitting_stats.append(player)
 
-    with open("data/hitting-stats-{SEASON}.json", "w") as f:
+    with open(f"data/hitting-stats-{SEASON}.json", "w") as f:
         json.dump(hitting_stats, f)
 
-    with open("data/pitching-stats-{SEASON}.json", "w") as f:
+    with open(f"data/pitching-stats-{SEASON}.json", "w") as f:
         json.dump(pitching_stats, f)
 
 
