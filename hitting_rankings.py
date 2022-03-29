@@ -13,7 +13,8 @@ def convert_outfield(pos):
 
 
 def main():
-    stats = pd.read_csv("data/hitting-stats-2021.csv", index_col="player_id")
+    YEAR = 2020
+    stats = pd.read_csv(f"data/hitting-stats-{YEAR}.csv", index_col="player_id")
     stats["primary_position"] = stats.primary_position.apply(convert_outfield)
     stats["ba"] = stats.h / stats.ab
     stats.drop(columns=["h", "ab"], inplace=True)
@@ -34,7 +35,7 @@ def main():
             left_index=True,
             right_index=True,
         ).sort_values("score", ascending=False)
-        final.to_csv(f"rankings/hitting-rankings-2021-pos-{pos}.csv")
+        final.to_csv(f"rankings/{YEAR}/hitting-rankings-{YEAR}-pos-{pos}.csv")
 
     # Do one for all players
     normed_stats = pd.DataFrame(
@@ -52,7 +53,7 @@ def main():
         left_index=True,
         right_index=True,
     ).sort_values("score", ascending=False)
-    final.to_csv(f"rankings/hitting-rankings-2021.csv")
+    final.to_csv(f"rankings/{YEAR}/hitting-rankings-{YEAR}.csv")
 
 
 if __name__ == "__main__":

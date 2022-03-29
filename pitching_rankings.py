@@ -3,7 +3,8 @@ from sklearn.preprocessing import MinMaxScaler
 
 
 def main():
-    stats = pd.read_csv("data/pitching-stats-2021.csv", index_col="player_id")
+    YEAR = 2020
+    stats = pd.read_csv(f"data/pitching-stats-{YEAR}.csv", index_col="player_id")
     stats.drop(index=stats[stats.ip == 0].index, inplace=True)
     stats["era"] = stats.er / stats.ip * 9
     stats["whip"] = (stats.bb + stats.h) / stats.ip
@@ -29,7 +30,7 @@ def main():
         left_index=True,
         right_index=True,
     ).sort_values("score", ascending=False)
-    starters_final.to_csv(f"rankings/pitching-rankings-2021-SP.csv")
+    starters_final.to_csv(f"rankings/{YEAR}/pitching-rankings-{YEAR}-SP.csv")
 
     # Just relievers
     releivers = stats[stats.RP]
@@ -47,7 +48,7 @@ def main():
         left_index=True,
         right_index=True,
     ).sort_values("score", ascending=False)
-    relievers_final.to_csv(f"rankings/pitching-rankings-2021-RP.csv")
+    relievers_final.to_csv(f"rankings/{YEAR}/pitching-rankings-{YEAR}-RP.csv")
 
     # All pitchers
     pitchers_stats = pd.DataFrame(
@@ -64,7 +65,7 @@ def main():
         left_index=True,
         right_index=True,
     ).sort_values("score", ascending=False)
-    pitchers_final.to_csv(f"rankings/pitching-rankings-2021.csv")
+    pitchers_final.to_csv(f"rankings/{YEAR}/pitching-rankings-{YEAR}.csv")
 
 
 if __name__ == "__main__":

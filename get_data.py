@@ -80,7 +80,7 @@ def get_season_pitching_stats(
 
 
 def main():
-    SEASON = 2021
+    SEASON = 2020
     teams = get_teams(SEASON)
     players = []
     for team in tqdm(teams):
