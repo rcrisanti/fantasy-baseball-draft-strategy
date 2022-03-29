@@ -13,7 +13,7 @@ def convert_outfield(pos):
 
 
 def main():
-    YEAR = 2020
+    YEAR = 2019
     stats = pd.read_csv(f"data/hitting-stats-{YEAR}.csv", index_col="player_id")
     stats["primary_position"] = stats.primary_position.apply(convert_outfield)
     stats["ba"] = stats.h / stats.ab

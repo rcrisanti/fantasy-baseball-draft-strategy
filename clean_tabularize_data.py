@@ -16,7 +16,7 @@ def convert_ip(ip) -> float:
 
 
 def main():
-    SEASON = 2020
+    SEASON = 2019
 
     hitting_stats = pd.read_json(f"data/hitting-stats-{SEASON}.json")
     pitching_stats = pd.read_json(f"data/pitching-stats-{SEASON}.json")

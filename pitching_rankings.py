@@ -3,7 +3,7 @@ from sklearn.preprocessing import MinMaxScaler
 
 
 def main():
-    YEAR = 2020
+    YEAR = 2019
     stats = pd.read_csv(f"data/pitching-stats-{YEAR}.csv", index_col="player_id")
     stats.drop(index=stats[stats.ip == 0].index, inplace=True)
     stats["era"] = stats.er / stats.ip * 9
